@@ -1,4 +1,15 @@
+
+using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+builder.Services.AddMySqlDataSource(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddTransient<MySqlConnector.MySqlConnection>(_ => new MySqlConnector.MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -14,7 +25,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+
+
+app.UseAuthorization(); 
 
 app.MapControllerRoute(
     name: "default",
